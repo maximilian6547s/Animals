@@ -3,6 +3,7 @@ package com.maximcuker.animal.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.maximcuker.animal.R
 import com.maximcuker.animal.model.Animal
@@ -28,6 +29,10 @@ class AnimalListAdapter(private val animalList: ArrayList<Animal>):
         holder.view.animalName.text = animalList[position].name
         holder.view.animalImage.loadImage(animalList[position].imageUrl,
             getProgressDrawable(holder.view.context))
+        holder.view.animalLayout.setOnClickListener {
+            val action = ListFragmentDirections.actionDetail(animalList[position])
+            Navigation.findNavController(holder.view).navigate(action)
+        }
     }
 
     override fun getItemCount(): Int = animalList.size
