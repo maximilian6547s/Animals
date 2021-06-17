@@ -7,6 +7,7 @@ import com.maximcuker.animal.di.AppModule
 import com.maximcuker.animal.di.DaggerViewModelComponent
 import com.maximcuker.animal.model.Animal
 import com.maximcuker.animal.model.AnimalApiService
+import com.maximcuker.animal.model.ApiKey
 import com.maximcuker.animal.util.SharedPreferencesHelper
 import com.maximcuker.animal.viewmodel.ListViewModel
 import io.reactivex.Scheduler
@@ -65,7 +66,22 @@ class ListViewModelTest {
         Assert.assertEquals(1, listViewModel.animals.value?.size)
         Assert.assertEquals(false, listViewModel.loadError.value)
         Assert.assertEquals(false, listViewModel.loading.value)
+    }
 
+    @Test
+    fun getAnimalsFailure() {
+        Mockito.`when`(prefs.getApiKey()).thenReturn(key)
+        val testSingle = Single.error<List<Animal>>(Throwable())
+        val keySingle = Single.just(ApiKey("Ok", key))
+
+        Mockito.`when`(animalService.getAnimals(key)).thenReturn(testSingle)
+        Mockito.`when`(animalService.getApiKey()).thenReturn(keySingle)
+
+        listViewModel.refresh()
+
+        Assert.assertEquals(null, listViewModel.animals.value)
+        Assert.assertEquals(true, listViewModel.loadError.value)
+        Assert.assertEquals(false, listViewModel.loading.value)
     }
 
     @Before
