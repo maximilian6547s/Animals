@@ -1,6 +1,6 @@
 # Animals
 Application with list of animals Using Kotlin, MVVM, Dagger2, Navigation, Retrofit and Unit tests
-Anumals list Application<br>
+Animals list Application<br>
 training application from course:<br>
 https://www.udemy.com/course/stateoftheartandroid/
 <br>
